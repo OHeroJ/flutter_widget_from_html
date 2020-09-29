@@ -92,6 +92,9 @@ class HtmlWidgetConfig {
   /// The default styling for text elements.
   final TextStyle textStyle;
 
+  /// The min width of image 
+  final double imgMinWidth;
+
   HtmlWidgetConfig({
     this.baseUrl,
     this.bodyPadding,
@@ -100,6 +103,7 @@ class HtmlWidgetConfig {
     this.onTapUrl,
     this.tableCellPadding,
     this.textStyle,
+    this.imgMinWidth,
   });
 }
 

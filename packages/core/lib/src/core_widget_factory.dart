@@ -157,7 +157,7 @@ class WidgetFactory {
     }
 
     return image != null
-        ? ImageLayout(image, height: height, text: text, width: width)
+        ? ImageLayout(image, height: height, text: text, width: width, minWidth: _config.imgMinWidth,)
         : text != null ? Text(text) : null;
   }
 

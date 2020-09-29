@@ -89,6 +89,7 @@ class HtmlWidgetConfig extends core.HtmlWidgetConfig {
     this.unsupportedWebViewWorkaroundForIssue37,
     this.webView,
     this.webViewJs,
+    double imgMinWidth,
   }) : super(
           baseUrl: baseUrl,
           bodyPadding: bodyPadding,
@@ -97,5 +98,6 @@ class HtmlWidgetConfig extends core.HtmlWidgetConfig {
           onTapUrl: onTapUrl,
           tableCellPadding: tableCellPadding,
           textStyle: textStyle,
+          imgMinWidth: imgMinWidth,
         );
 }

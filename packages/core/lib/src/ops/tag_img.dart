@@ -7,8 +7,10 @@ class ImageLayout extends StatefulWidget {
   final ImageProvider image;
   final String text;
   final double width;
+  final double minWidth;
 
-  ImageLayout(this.image, {this.height, Key key, this.text, this.width})
+  ImageLayout(this.image,
+      {this.height, Key key, this.text, this.width, this.minWidth})
       : assert(image != null),
         super(key: key);
 
@@ -66,7 +68,8 @@ class _ImageLayoutState extends State<ImageLayout> {
       // 3. From async update / triggered state change (see above)
       return CustomSingleChildLayout(
         child: Image(image: widget.image, fit: BoxFit.cover),
-        delegate: _ImageLayoutDelegate(height: height, width: width),
+        delegate: _ImageLayoutDelegate(
+            height: height, width: width, minWidth: widget.minWidth),
       );
     }
 
@@ -78,8 +81,9 @@ class _ImageLayoutDelegate extends SingleChildLayoutDelegate {
   final double height;
   final double ratio;
   final double width;
+  final double minWidth;
 
-  _ImageLayoutDelegate({this.height, this.width})
+  _ImageLayoutDelegate({this.height, this.width, this.minWidth})
       : assert(height > 0),
         assert(width > 0),
         ratio = width / height;
@@ -90,14 +94,19 @@ class _ImageLayoutDelegate extends SingleChildLayoutDelegate {
 
   @override
   Size getSize(BoxConstraints bc) {
-    final w = width < bc.maxWidth ? width : bc.maxWidth;
-    final h = height < bc.maxHeight ? height : bc.maxHeight;
-    if (w == width && h == height) return Size(w, h);
-
-    final r = w / h;
-    if (r < ratio) return Size(w, w / ratio);
-
-    return Size(h * ratio, h);
+    if (minWidth != null && minWidth > 0) {
+      final w = width < bc.maxWidth ? (width > minWidth ? width : minWidth) : bc.maxWidth;
+      final h = height < bc.maxHeight ? height : bc.maxHeight;
+      if (w == width && h == height) return Size(w, h);
+      return Size(w, w / ratio);
+    } else {
+      final w = width < bc.maxWidth ? width : bc.maxWidth;
+      final h = height < bc.maxHeight ? height : bc.maxHeight;
+      if (w == width && h == height) return Size(w, h);
+      final r = w / h;
+      if (r < ratio) return Size(w, w / ratio);
+      return Size(h * ratio, h);
+    }
   }
 
   @override
